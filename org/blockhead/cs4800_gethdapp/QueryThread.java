@@ -47,8 +47,16 @@ public class QueryThread extends Thread {
     @Override
     public void run() {
         while (live) {
+//            synchronized (waitlock) {
+//                try {
+//                    waitlock.wait(1000);
+//                } catch (InterruptedException ex) {
+//                    //shouldn't happen, but continue operation if it does
+//                }
+//            }
             String queries = HTTPHandler.getQueries();
             if (queries.contains("\"status\": \"not ok\"") || queries.length() < 50) {
+//                System.out.println("QueryThread: no queries: " + queries);
                 synchronized (waitlock) {
                     try {
                         waitlock.wait(1000);
@@ -63,8 +71,9 @@ public class QueryThread extends Thread {
                     Iterator<String> queryIDs = queryMap.keySet().iterator();
                     for (; queryIDs.hasNext();) {
                         String tempID = queryIDs.next();
-                        System.out.println(tempID);
-                        System.out.println(queryMap.get(tempID));
+                        System.out.println("QueryThread: query: \n" + tempID + "\n" + queryMap.get(tempID));
+//                        System.out.println(tempID);
+//                        System.out.println(queryMap.get(tempID));
                         //String results = SearchMethod(queryMap.get(tempID), data);
                         //HTTPHandler.postQueryResults(tempID, results);   
                     }

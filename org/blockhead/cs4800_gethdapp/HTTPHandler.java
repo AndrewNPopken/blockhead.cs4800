@@ -26,7 +26,7 @@ public class HTTPHandler {
     private static final String API_URL = "https://blockchain-restful-api.herokuapp.com/";
 
     public static String getTransactions() {
-        String url = API_URL + "api/transactions?blockchainID=0";
+        String url = API_URL + "api/transaction?blockchainID=0";
         String charset = java.nio.charset.StandardCharsets.UTF_8.name();
         try {
             URLConnection connection = new URL(url/* + query*/).openConnection();

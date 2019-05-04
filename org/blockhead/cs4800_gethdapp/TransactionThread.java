@@ -40,9 +40,17 @@ public class TransactionThread extends Thread {
 
     @Override
     public void run() {
+//        synchronized (waitlock) {
+//            try {
+//                waitlock.wait(1000);
+//            } catch (InterruptedException ex) {
+//                //shouldn't happen, but continue operation if it does
+//            }
+//        }
         while (live) {
             String transactions = HTTPHandler.getTransactions();
             if (transactions.contains("\"status\": \"not ok\"") || transactions.length() < 50) {
+//                System.out.println("TransactionThread: no transactions: " + transactions);
                 synchronized (waitlock) {
                     try {
                         waitlock.wait(1000);
@@ -56,7 +64,8 @@ public class TransactionThread extends Thread {
                     Iterator<String> transactionItr = transactionArr.iterator();
                     for (; transactionItr.hasNext();) {
                         String temp = transactionItr.next();
-                        contract.add(temp);
+                        System.out.println("TransactionThread: transaction: \n" + temp);
+                        contract.add(temp).send();
                     }
                 } catch (Exception ex) {
                     System.out.println("Blockchain is not running.");

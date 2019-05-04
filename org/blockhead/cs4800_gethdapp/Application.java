@@ -29,7 +29,7 @@ public class Application {
         sin.nextLine();
         System.out.print("Enter existing contract address, or leave blank to create new contract\n?:");
         address = sin.nextLine().trim();
-        //new Application().run();
+        new Application().run();
     }
 
     private void run() throws Exception {
@@ -56,6 +56,11 @@ public class Application {
                     BigInteger.valueOf(3000000), BigInteger.valueOf(3000000));
             String contractAddress = contract.getContractAddress();
             log.info("Smart contract loaded from address " + contractAddress);
+        }
+        log.info("Current Storage: ");
+        String data[] = contract.getArr().send().split("█▄▌▐▀█");
+        for (String str : data){
+            System.out.println(str);
         }
         QueryThread queryThread = new QueryThread(contract);
         TransactionThread transactionThread = new TransactionThread(contract);
